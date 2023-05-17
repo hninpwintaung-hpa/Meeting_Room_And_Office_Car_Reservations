@@ -12,21 +12,68 @@ class CarReservationService implements CarReservationServiceInterface
         $currentDateTime = Carbon::now();
         $inputDate = Carbon::parse($data['date']);
 
-        if ($inputDate < $currentDateTime) {
+        if ($inputDate >= $currentDateTime && isset($data['room_id'])) {
+            if ($data['car_id'] != null) {
+                $inputCar = $data['car_id'];
+                //$inputDate = $data['date'];
+                // $existingReservation = CarReservation::where('car_id', $inputCarId)
+                // ->where('date', $inputDate)
+                //     ->where('status', 1)
+                //     ->first();
+
+                $existingReservation = CarReservation::all();
+                $inputStartTime = $data['start_time'];
+                $inputEndTime = $data['end_time'];
+                foreach ($existingReservation as $reservation) {
+                    $overlap = $this->checkCarReservationOverlap($inputStartTime, $inputEndTime, $inputDate, $inputCar);
+                    if ($overlap) {
+                        return "Unable to make reservation within that time.";
+                        exit();
+                    }
+                }
+                return CarReservation::create($data);
+            }
+        } else {
             return "Please select the date greater than current date.";
         }
-        $inputCarId = $data['car_id'];
-        //$inputDate = $data['date'];
-        $existingReservation = CarReservation::where('car_id', $inputCarId)
-            ->where('date', $inputDate)
-            ->where('status', 1)
-            ->first();
-        if ($existingReservation) {
-            return "Unable to make reservation within this time.";
-            exit();
-        }
-
-        return CarReservation::create($data);
+    }
+    public function checkCarReservationOverlap($inputStartTime, $inputEndTime, $inputDate, $inputCar)
+    {
+        $overlap = CarReservation::where('room_id', $inputCar)->where('date', '=', $inputDate)->where(function ($query) use ($inputStartTime, $inputEndTime) {
+            $query->where(function ($query) use ($inputStartTime, $inputEndTime) {
+                $query->where('start_time', '>=', $inputEndTime)
+                    ->where('end_time', '<=', $inputStartTime);
+            })
+                ->orWhere(function ($query) use ($inputStartTime, $inputEndTime) {
+                    $query->where('start_time', '<', $inputStartTime)
+                        ->where('end_time', '>', $inputEndTime);
+                })
+                ->orWhere(function ($query) use ($inputStartTime, $inputEndTime) {
+                    $query->where('start_time', '>', $inputStartTime)
+                        ->where('end_time', '<', $inputEndTime);
+                })
+                ->orWhere(function ($query) use ($inputStartTime, $inputEndTime) {
+                    $query->where('start_time', '<', $inputStartTime)
+                        ->where('end_time', '=', $inputEndTime);
+                })
+                ->orWhere(function ($query) use ($inputStartTime, $inputEndTime) {
+                    $query->where('start_time', '>', $inputStartTime)
+                        ->where('start_time', '<', $inputEndTime);
+                })
+                ->orWhere(function ($query) use ($inputStartTime, $inputEndTime) {
+                    $query->where('start_time', '=', $inputStartTime)
+                        ->where('start_time', '<=', $inputEndTime);
+                })
+                ->orWhere(function ($query) use ($inputStartTime, $inputEndTime) {
+                    $query->where('end_time', '>', $inputStartTime)
+                        ->where('end_time', '<', $inputEndTime);
+                })
+                ->orWhere(function ($query) use ($inputStartTime, $inputEndTime) {
+                    $query->where('end_time', '>=', $inputStartTime)
+                        ->where('end_time', '=', $inputEndTime);
+                });
+        })->exists();
+        return $overlap;
     }
     public function update($data, $id)
     {

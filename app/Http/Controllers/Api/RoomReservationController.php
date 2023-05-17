@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\RoomReservation;
 use App\Repository\RoomReservation\RoomReservationRepoInterface;
 use App\Services\RoomReservation\RoomReservationServiceInterface;
 use Exception;
@@ -28,7 +27,7 @@ class RoomReservationController extends BaseController
     {
         try {
             $reservation = $this->roomReservationRepo->get();
-            return $this->sendResponse($reservation, 'Created Successfully');
+            return $this->sendResponse($reservation, 'Data Show Successfully');
         } catch (Exception $e) {
             return $this->sendError('Error', $e->getMessage());
         }
@@ -78,8 +77,7 @@ class RoomReservationController extends BaseController
     public function searchByDate(Request $request)
     {
         try {
-            //$date = $request->input('date');
-            $data = $this->roomReservationRepo->searchByDate($request->input('date'));
+            $data = $this->roomReservationRepo->searchByDate($request->date);
             return $this->sendResponse($data, 'Data show by selected date');
         } catch (Exception $e) {
             return $this->sendError('Error', $e->getMessage());

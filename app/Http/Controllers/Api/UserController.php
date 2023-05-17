@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use App\Repository\User\UserRepoInterface;
 use App\Services\User\UserServiceInterface;
+use Exception;
+
 
 class UserController extends Controller
 {
@@ -19,7 +21,8 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
     private $userService, $userRepo;
-    public function __construct(UserServiceInterface $userService, UserRepoInterface $userRepo){
+    public function __construct(UserServiceInterface $userService, UserRepoInterface $userRepo)
+    {
 
         $this->userService = $userService;
         $this->userRepo = $userRepo;
@@ -27,7 +30,7 @@ class UserController extends Controller
 
     public function index()
     {
-        try{
+        try {
             $user = Auth::user();
             if (!$user->can('user-list')) {
                 return response()->json([
@@ -37,17 +40,16 @@ class UserController extends Controller
             }
             $data = $this->userRepo->get();
             return response()->json([
-            'status' => 'success',
-            'message' => "user list all",
-            'data' => $data
-        ], 200);
-
-        } catch(Exception $e) {
+                'status' => 'success',
+                'message' => "user list all",
+                'data' => $data
+            ], 200);
+        } catch (Exception $e) {
             return response()->json([
-            'status' => 'error',
-            'message' => $e->getMesage(),
-            'data' => $data
-        ], 500);
+                'status' => 'error',
+                'message' => $e->getMessage(),
+                'data' => $data
+            ], 500);
         }
     }
 
@@ -59,19 +61,19 @@ class UserController extends Controller
      */
     public function store(UserRequest $request)
     {
-        try{
-            $data = $this->userService->store($request->validated());
+        try {
+            $data = $this->userService->store($request->all());
             return response()->json([
-            'status' => 'success',
-            'message' => 'New user store',
-            'data' => $data
-        ], 200);
-        }  catch(Exception $e) {
+                'status' => 'success',
+                'message' => 'New user store',
+                'data' => $data
+            ], 200);
+        } catch (Exception $e) {
             return response()->json([
-            'status' => 'error',
-            'message' => $e->getMesage(),
-            'data' => $data
-        ], 500);
+                'status' => 'error',
+                'message' => $e->getMessage(),
+                'data' => $data
+            ], 500);
         }
     }
 
@@ -83,20 +85,19 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        try{
+        try {
             $data = $this->userRepo->show($id);
             return response()->json([
-            'status' => 'success',
-            'message' => "user select",
-            'data' => $data
-        ], 200);
-
-        } catch(Exception $e) {
+                'status' => 'success',
+                'message' => "user select",
+                'data' => $data
+            ], 200);
+        } catch (Exception $e) {
             return response()->json([
-            'status' => 'error',
-            'message' => $e->getMesage(),
-            'data' => $data
-        ], 500);
+                'status' => 'error',
+                'message' => $e->getMessage(),
+                'data' => $data
+            ], 500);
         }
     }
 
@@ -109,7 +110,6 @@ class UserController extends Controller
      */
     public function update(UserRequest $request, $id)
     {
-
     }
 
     /**
@@ -120,7 +120,7 @@ class UserController extends Controller
      */
     public function userDelete($id)
     {
-        try{
+        try {
 
             $user = Auth::user();
             if (!$user->can('delete-user')) {
@@ -145,25 +145,23 @@ class UserController extends Controller
 
                 $data = $this->userService->destroy($id);
                 return response()->json([
-                'status' => 'success',
-                'message' => 'user delete successful',
-                'data' => $data
+                    'status' => 'success',
+                    'message' => 'user delete successful',
+                    'data' => $data
                 ], 200);
             }
-
-
-        }  catch(Exception $e) {
+        } catch (Exception $e) {
             return response()->json([
-            'status' => 'error',
-            'message' => $e->getMesage(),
-            'data' => $data
-        ], 500);
+                'status' => 'error',
+                'message' => $e->getMessage(),
+                // 'data' => $data
+            ], 500);
         }
     }
 
     public function adminDelete($id)
     {
-        try{
+        try {
 
             $user = Auth::user();
             if (!$user->can('delete-admin')) {
@@ -180,21 +178,17 @@ class UserController extends Controller
 
                 $data = $this->userService->destroy($id);
                 return response()->json([
-                'status' => 'success',
-                'message' => 'admin delete successful',
-                'data' => $data
+                    'status' => 'success',
+                    'message' => 'admin delete successful',
+                    'data' => $data
                 ], 200);
             }
-
-
-        }  catch(Exception $e) {
+        } catch (Exception $e) {
             return response()->json([
-            'status' => 'error',
-            'message' => $e->getMesage(),
-            'data' => $data
-        ], 500);
+                'status' => 'error',
+                'message' => $e->getMessage(),
+                // 'data' => $data
+            ], 500);
         }
     }
-
-
 }

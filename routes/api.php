@@ -30,7 +30,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post('register', [AuthController::class, 'register']);
 Route::post('login', [AuthController::class, 'login']);
 
-Route::apiResource('teams', TeamController::class)->middleware('auth:sanctum');
+Route::apiResource('teams', TeamController::class);
+// Route::apiResource('teams', TeamController::class)->middleware('auth:sanctum');
 Route::apiResource('roles', RoleController::class)->middleware('auth:sanctum');
 Route::delete('/users/user_delete/{id}', [UserController::class, 'userDelete'])
     ->middleware('auth:sanctum');
@@ -43,7 +44,4 @@ Route::apiResource('rooms', RoomController::class);
 Route::apiResource('cars', CarController::class);
 Route::apiResource('car_reservation', CarReservationController::class);
 Route::apiResource('room_reservation', RoomReservationController::class);
-
 Route::post('room_reservation/searchByDate', [RoomReservationController::class, 'searchByDate'])->name('room_reservation.searchByDate');
-
-//Route::post('/auth/register', [AuthController::class, 'registerUser']);

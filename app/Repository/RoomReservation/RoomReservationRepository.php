@@ -15,10 +15,8 @@ class RoomReservationRepository implements RoomReservationRepoInterface
     {
         return RoomReservation::where('id', $id)->first();
     }
-    public function searchByDate($data)
+    public function searchByDate($date)
     {
-        //dd('Hello');
-        //dd($data);
-        return RoomReservation::whereDate('date', $data)->get();
+        return  RoomReservation::where('date', $date)->get();
     }
 }

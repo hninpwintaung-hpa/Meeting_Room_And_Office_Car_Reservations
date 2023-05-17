@@ -23,10 +23,10 @@ class RoomReservationService implements RoomReservationServiceInterface
                 $reservations = RoomReservation::all();
                 $inputStartTime = $data['start_time'];
                 $inputEndTime = $data['end_time'];
-                //$inputDate = $data['date'];
+
                 $inputRoom = $data['room_id'];
                 if (!empty($reservations)) {
-                    // return $this->makeRoomReservation($data);
+
                     foreach ($reservations as $reservation) {
 
                         $overlap = $this->checkRoomReservationOverlap($inputStartTime, $inputEndTime, $inputDate, $inputRoom);

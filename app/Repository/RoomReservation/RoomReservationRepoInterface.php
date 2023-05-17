@@ -6,5 +6,5 @@ interface RoomReservationRepoInterface
 {
     public function get();
     public function show($id);
-    public function searchByDate($data);
+    public function searchByDate($date);
 }

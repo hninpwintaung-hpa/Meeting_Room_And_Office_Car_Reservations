@@ -1,12 +1,15 @@
 <?php
 
 namespace App\Services\User;
+
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 
-class UserService implements UserServiceInterface{
+class UserService implements UserServiceInterface
+{
 
-    public function store($data){
+    public function store($data)
+    {
         // return User::create($data);
         $user = User::create([
             'name' => $data['name'],
@@ -24,13 +27,15 @@ class UserService implements UserServiceInterface{
         return $user;
     }
 
-    public function update($data, $id){
+    public function update($data, $id)
+    {
 
         $result = User::where('id', $id)->first();
         return $result->update($data);
     }
 
-    public function destroy($id){
+    public function destroy($id)
+    {
 
         $data = User::where('id', $id)->first();
         $roles = $data->getRoleNames();
@@ -41,7 +46,5 @@ class UserService implements UserServiceInterface{
 
         $data->save();
         return $data->delete();
-
-        }
-        
+    }
 }
