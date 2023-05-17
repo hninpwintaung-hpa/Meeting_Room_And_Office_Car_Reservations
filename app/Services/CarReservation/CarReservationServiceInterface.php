@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Service\Reservation;
+namespace App\Services\CarReservation;
 
-interface ReservationServiceInterface
+interface CarReservationServiceInterface
 {
     public function store($data);
     public function update($data, $id);

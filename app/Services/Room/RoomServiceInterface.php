@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service\Room;
+namespace App\Services\Room;
 
 interface RoomServiceInterface
 {

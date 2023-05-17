@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Repository\Reservation\ReservationRepoInterface;
-use App\Service\Reservation\ReservationServiceInterface;
+use App\Services\Reservation\ReservationServiceInterface;
 use Exception;
 use Illuminate\Http\Request;
 
@@ -47,7 +47,6 @@ class ReservationController extends BaseController
                 'end_time' => 'required|after:start_time',
                 'date' => 'required',
                 'user_id' => 'required',
-                //'reserve_token' => 'required',
             ]);
 
             $reservation = $this->reservationService->store($request->all());

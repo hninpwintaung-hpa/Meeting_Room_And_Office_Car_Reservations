@@ -6,7 +6,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Requests\CarRequest;
 use App\Models\Car;
 use App\Repository\Car\CarRepository;
-use App\Service\Car\CarServiceInterface;
+use App\Services\Car\CarServiceInterface;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -40,22 +40,16 @@ class CarController extends BaseController
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(CarRequest $request)
+    public function store(Request $request)
     {
         try {
-            // $validator = Validator::make($request->all(), [
-            //     'car_no' => 'required|unique:cars,car_no,',
-            //     'car_image' => 'nullable|mimes:jpeg,png,jpg',
-            // ]);
-
-            // if ($validator->fails()) {
-            //     return $this->sendError('Validation Error.', $validator->errors());
-            // }
-            //$input = $request->all();
-            //$data = $this->carService->store($input);
-            //$input = $request->validated();
-
-            $data = $this->carService->store($request->validated());
+            $input = $request->validate([
+                'brand' => 'required',
+                'licence_no' => 'required|unique:cars,licence_no',
+                'capacity' => 'required',
+                'image' => 'nullable|mimes:jpeg,png,jpg',
+            ]);
+            $data = $this->carService->store($input);
             return $this->sendResponse($data, 'Register successfully.');
         } catch (Exception $e) {
             return $this->sendError('Error p', $e->getMessage());
@@ -88,16 +82,17 @@ class CarController extends BaseController
     public function update(Request $request, $id)
     {
         try {
-            $validatedData = $request->validate([
-                'car_no' => 'required|unique:cars,car_no,' . $id,
-                'car_image' => 'nullable|mimes:jpeg,png,jpg',
+            $input = $request->validate([
+                'brand' => 'required',
+                'licence_no' => 'required|unique:cars,licence_no,' . $id,
+                'capacity' => 'required',
+                'image' => 'nullable|mimes:jpeg,png,jpg',
             ]);
-            $data = $this->carService->update($validatedData, $id);
+            $data = $this->carService->update($input, $id);
             return $this->sendResponse($data, 'Updated successfully.');
         } catch (Exception $e) {
             return $this->sendError('Error', $e->getMessage());
         }
-        // return redirect()->route('posts.index');
     }
 
     /**

@@ -3,18 +3,32 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Repository\CarReservation\CarReservationRepoInterface;
+use App\Services\CarReservation\CarReservationServiceInterface;
+use Exception;
 use Illuminate\Http\Request;
 
-class CarReservationController extends Controller
+class CarReservationController extends BaseController
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
+    private $carReservationService, $carReservationRepo;
+    public function __construct(CarReservationRepoInterface $carReservationRepo, CarReservationServiceInterface $carReservationService)
+    {
+        $this->carReservationService = $carReservationService;
+        $this->carReservationRepo = $carReservationRepo;
+    }
     public function index()
     {
-        //
+        try {
+            $data = $this->carReservationRepo->get();
+            return $this->sendResponse($data, ' Data Show successfully.');
+        } catch (Exception $e) {
+            return $this->sendError('Error', $e->getMessage());
+        }
     }
 
     /**
@@ -25,7 +39,21 @@ class CarReservationController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try {
+            $input = $request->validate([
+                'title' => 'required',
+                'start_time' => 'required',
+                'date' => 'required',
+                'destination' => 'required',
+                'no_of_traveller' => 'required',
+                'user_id' => 'required',
+                'car_id' => 'required',
+            ]);
+            $data = $this->carReservationService->store($input);
+            return $this->sendResponse($data, 'Created  Reservation successfully.');
+        } catch (Exception $e) {
+            return $this->sendError('Error', $e->getMessage());
+        }
     }
 
     /**
@@ -36,7 +64,12 @@ class CarReservationController extends Controller
      */
     public function show($id)
     {
-        //
+        try {
+            $data = $this->carReservationRepo->show($id);
+            return $this->sendResponse($data, ' Data Show successfully.');
+        } catch (Exception $e) {
+            return $this->sendError('Error', $e->getMessage());
+        }
     }
 
     /**
@@ -48,7 +81,21 @@ class CarReservationController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        try {
+            $input = $request->validate([
+                'title' => 'required',
+                'start_time' => 'required',
+                'date' => 'required',
+                'destination' => 'required',
+                'no_of_traveller' => 'required',
+                'user_id' => 'required',
+                'car_id' => 'required',
+            ]);
+            $data = $this->carReservationService->update($input, $id);
+            return $this->sendResponse($data, 'Updated Reservation successfully.');
+        } catch (Exception $e) {
+            return $this->sendError('Error', $e->getMessage());
+        }
     }
 
     /**
@@ -59,6 +106,11 @@ class CarReservationController extends Controller
      */
     public function destroy($id)
     {
-        //
+        try {
+            $data = $this->carReservationService->delete($id);
+            return $this->sendResponse($data, 'Deleted successfully.');
+        } catch (Exception $e) {
+            return $this->sendError('Error', $e->getMessage());
+        }
     }
 }

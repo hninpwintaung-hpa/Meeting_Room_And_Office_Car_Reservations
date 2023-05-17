@@ -15,10 +15,10 @@ return new class extends Migration
     {
         Schema::create('rooms', function (Blueprint $table) {
             $table->id();
-            $table->string('room_name');
-            $table->binary('room_image');
-            $table->boolean('status')->default(true);
+            $table->string('name');
             $table->string('capacity');
+            $table->string('amenities')->nullable();
+            $table->string('image')->nullable();
             $table->timestamps();
         });
     }

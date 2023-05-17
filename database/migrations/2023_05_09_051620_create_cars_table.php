@@ -14,10 +14,11 @@ return new class extends Migration
     public function up()
     {
         Schema::create('cars', function (Blueprint $table) {
-            $table->id('car_id');
-            $table->string('car_no');
-            $table->string('car_image')->nullable();
-            $table->boolean('status')->default(true);
+            $table->id('id');
+            $table->string('brand');
+            $table->string('licence_no');
+            $table->integer('capacity');
+            $table->string('image')->nullable();
             $table->timestamps();
         });
     }

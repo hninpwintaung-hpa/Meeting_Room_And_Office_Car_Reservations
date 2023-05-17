@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Repository\Room\RoomRepoInterface;
-use App\Service\Room\RoomServiceInterface;
+use App\Services\Room\RoomServiceInterface;
 use Exception;
 use Illuminate\Http\Request;
 
@@ -40,16 +40,16 @@ class RoomController extends BaseController
     public function store(Request $request)
     {
         try {
-            $request = $request->validate([
-                'room_name' => 'required',
-                'room_image' => 'nullable|mimes:jpeg,png,jpg',
-                'status' => 'required',
-                'capacity' => 'required'
+            $input = $request->validate([
+                'name' => 'required',
+                'capacity' => 'required',
+                'amenities' => 'nullable',
+                'image' => 'nullable|mimes:jpeg,png,jpg',
             ]);
-            $data = $this->roomService->store($request);
+            $data = $this->roomService->store($input);
             return $this->sendResponse($data, 'Register successfully.');
         } catch (Exception $e) {
-            return $this->sendError('Error in register', $e->getMessage());
+            return $this->sendError('Error in register!', $e->getMessage());
         }
     }
 
@@ -79,10 +79,13 @@ class RoomController extends BaseController
     public function update(Request $request, $id)
     {
         try {
-            $request = $request->validate([
-                'room_image' => 'nullable|mimes:jpeg,png,jpg',
+            $input = $request->validate([
+                'name' => 'required',
+                'capacity' => 'required',
+                'amenities' => 'nullable',
+                'image' => 'nullable|mimes:jpeg,png,jpg',
             ]);
-            $data = $this->roomService->update($request, $id);
+            $data = $this->roomService->update($input, $id);
             return $this->sendResponse($data, 'Updated successfully.');
         } catch (Exception $e) {
             return $this->sendError('Error', $e->getMessage());

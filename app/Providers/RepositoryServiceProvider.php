@@ -4,20 +4,25 @@ namespace App\Providers;
 
 use App\Repository\Car\CarRepoInterface;
 use App\Repository\Car\CarRepository;
-use App\Repository\Reservation\ReservationRepoInterface;
-use App\Repository\Reservation\ReservationRepository;
+
+use App\Repository\CarReservation\CarReservationRepoInterface;
+use App\Repository\CarReservation\CarReservationRepository;
+
+use App\Repository\RoomReservation\RoomReservationRepoInterface;
+use App\Repository\RoomReservation\RoomReservationRepository;
+
+use App\Services\RoomReservation\RoomReservationService;
+use App\Services\RoomReservation\RoomReservationServiceInterface;
+
 use App\Repository\Room\RoomRepoInterface;
 use App\Repository\Room\RoomRepository;
-use App\Repository\Team\TeamRepoInterface;
-use App\Repository\Team\TeamRepository;
-use App\Service\Car\CarService;
-use App\Service\Car\CarServiceInterface;
-use App\Service\Reservation\ReservationService;
-use App\Service\Reservation\ReservationServiceInterface;
-use App\Service\Room\RoomService;
-use App\Service\Room\RoomServiceInterface;
-use App\Service\Team\TeamService;
-use App\Service\Team\TeamServiceInterface;
+use App\Services\Car\CarService;
+use App\Services\Car\CarServiceInterface;
+use App\Services\CarReservation\CarReservationService;
+use App\Services\CarReservation\CarReservationServiceInterface;
+
+use App\Services\Room\RoomService;
+use App\Services\Room\RoomServiceInterface;
 use Illuminate\Support\ServiceProvider;
 
 class RepositoryServiceProvider extends ServiceProvider
@@ -42,16 +47,13 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(CarRepoInterface::class, CarRepository::class);
         $this->app->bind(CarServiceInterface::class, CarService::class);
 
-        $this->app->bind(RoleRepoInterface::class, RoleRepository::class);
-        $this->app->bind(RoleServiceInterface::class, RoleService::class);
-
         $this->app->bind(RoomRepoInterface::class, RoomRepository::class);
         $this->app->bind(RoomServiceInterface::class, RoomService::class);
 
-        $this->app->bind(TeamRepoInterface::class, TeamRepository::class);
-        $this->app->bind(TeamServiceInterface::class, TeamService::class);
+        $this->app->bind(CarReservationRepoInterface::class, CarReservationRepository::class);
+        $this->app->bind(CarReservationServiceInterface::class, CarReservationService::class);
 
-        $this->app->bind(ReservationRepoInterface::class, ReservationRepository::class);
-        $this->app->bind(ReservationServiceInterface::class, ReservationService::class);
+        $this->app->bind(RoomReservationRepoInterface::class, RoomReservationRepository::class);
+        $this->app->bind(RoomReservationServiceInterface::class, RoomReservationService::class);
     }
 }
