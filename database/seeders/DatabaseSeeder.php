@@ -2,9 +2,14 @@
 
 namespace Database\Seeders;
 
+<<<<<<< HEAD
 use App\Models\Team;
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+=======
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Database\Seeder;
+>>>>>>> hpa
 
 class DatabaseSeeder extends Seeder
 {
@@ -21,6 +26,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $this->call(AdminSeeder::class);
+<<<<<<< HEAD
 
         $team1 = Team::create(
             [
@@ -43,5 +49,7 @@ class DatabaseSeeder extends Seeder
             ]
         );
 
+=======
+>>>>>>> hpa
     }
 }

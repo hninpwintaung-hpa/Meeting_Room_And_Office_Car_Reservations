@@ -2,7 +2,8 @@
 
 namespace App\Repository\Team;
 
-interface TeamRepoInterface {
+interface TeamRepoInterface
+{
 
     public function get();
 

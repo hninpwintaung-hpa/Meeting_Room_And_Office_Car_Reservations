@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import 'bootstrap';
+=======
+window._ = require('lodash');
+>>>>>>> hpa
 
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests
@@ -6,8 +10,12 @@ import 'bootstrap';
  * CSRF token as a header based on the value of the "XSRF" token cookie.
  */
 
+<<<<<<< HEAD
 import axios from 'axios';
 window.axios = axios;
+=======
+window.axios = require('axios');
+>>>>>>> hpa
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
@@ -19,6 +27,7 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 // import Echo from 'laravel-echo';
 
+<<<<<<< HEAD
 // import Pusher from 'pusher-js';
 // window.Pusher = Pusher;
 
@@ -30,4 +39,13 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 //     wssPort: import.meta.env.VITE_PUSHER_PORT ?? 443,
 //     forceTLS: (import.meta.env.VITE_PUSHER_SCHEME ?? 'https') === 'https',
 //     enabledTransports: ['ws', 'wss'],
+=======
+// window.Pusher = require('pusher-js');
+
+// window.Echo = new Echo({
+//     broadcaster: 'pusher',
+//     key: process.env.MIX_PUSHER_APP_KEY,
+//     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
+//     forceTLS: true
+>>>>>>> hpa
 // });

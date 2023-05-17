@@ -3,13 +3,12 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\RoomReservation;
-use App\Repository\RoomReservation\RoomReservationRepoInterface;
-use App\Services\RoomReservation\RoomReservationServiceInterface;
+use App\Repository\Reservation\ReservationRepoInterface;
+use App\Services\Reservation\ReservationServiceInterface;
 use Exception;
 use Illuminate\Http\Request;
 
-class RoomReservationController extends BaseController
+class ReservationController extends BaseController
 {
     /**
      * Display a listing of the resource.
@@ -17,17 +16,17 @@ class RoomReservationController extends BaseController
      * @return \Illuminate\Http\Response
      */
 
-    private  $roomReservationRepo, $roomReservationService;
-    public function __construct(RoomReservationRepoInterface $roomReservationRepo, RoomReservationServiceInterface $reservationService)
+    private  $reservationRepo, $reservationService;
+    public function __construct(ReservationRepoInterface $reservationRepo, ReservationServiceInterface $reservationService)
     {
-        $this->roomReservationService = $reservationService;
-        $this->roomReservationRepo =  $roomReservationRepo;
+        $this->reservationService = $reservationService;
+        $this->reservationRepo = $reservationRepo;
     }
     public function index()
 
     {
         try {
-            $reservation = $this->roomReservationRepo->get();
+            $reservation = $this->reservationRepo->get();
             return $this->sendResponse($reservation, 'Created Successfully');
         } catch (Exception $e) {
             return $this->sendError('Error', $e->getMessage());
@@ -44,16 +43,13 @@ class RoomReservationController extends BaseController
     {
         try {
             $request->validate([
-                'user_id' => 'required',
-                'title' => 'required',
-                'description' => 'nullable',
                 'start_time' => 'required',
                 'end_time' => 'required|after:start_time',
                 'date' => 'required',
-                'room_id' => 'required',
+                'user_id' => 'required',
             ]);
 
-            $reservation = $this->roomReservationService->store($request->all());
+            $reservation = $this->reservationService->store($request->all());
             return $this->sendResponse($reservation, 'Created Successfully');
         } catch (Exception $e) {
             return $this->sendError('Error', $e->getMessage());
@@ -69,22 +65,13 @@ class RoomReservationController extends BaseController
     public function show($id)
     {
         try {
-            $data = $this->roomReservationRepo->show($id);
-            return $this->sendResponse($data, 'Data Show Successfully');
+            $reservation = $this->reservationRepo->show($id);
+            return $this->sendResponse($reservation, 'Data Show Successfully');
         } catch (Exception $e) {
             return $this->sendError('Error', $e->getMessage());
         }
     }
-    public function searchByDate(Request $request)
-    {
-        try {
-            //$date = $request->input('date');
-            $data = $this->roomReservationRepo->searchByDate($request->input('date'));
-            return $this->sendResponse($data, 'Data show by selected date');
-        } catch (Exception $e) {
-            return $this->sendError('Error', $e->getMessage());
-        }
-    }
+
     /**
      * Update the specified resource in storage.
      *
@@ -96,16 +83,15 @@ class RoomReservationController extends BaseController
     {
         try {
             $input = $request->validate([
-                'user_id' => 'required',
-                'title' => 'required',
-                'description' => 'required',
                 'start_time' => 'required',
-                'end_time' => 'required|after:start_time',
+                'end_time' => 'required',
                 'date' => 'required',
-                'room_id' => 'required',
+                'user_id' => 'required',
+                'room_id' => 'nullable',
+                'car_id' => 'nullable'
             ]);
 
-            $data = $this->roomReservationService->update($input, $id);
+            $data = $this->reservationService->update($input, $id);
             return $this->sendResponse($data, 'Updated Successfully');
         } catch (Exception $e) {
             return $this->sendError('Error', $e->getMessage());
@@ -121,7 +107,7 @@ class RoomReservationController extends BaseController
     public function destroy($id)
     {
         try {
-            $data = $this->roomReservationService->delete($id);
+            $data = $this->reservationService->delete($id);
             return $this->sendResponse($data, 'Deleted Successfully');
         } catch (Exception $e) {
             return $this->sendError('Error', $e->getMessage());

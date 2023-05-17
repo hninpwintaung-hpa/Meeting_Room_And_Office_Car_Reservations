@@ -7,6 +7,7 @@ use App\Http\Requests\TeamRequest;
 use App\Http\Controllers\Controller;
 use App\Repository\Team\TeamRepoInterface;
 use App\Services\Team\TeamServiceInterface;
+use Exception;
 
 class TeamController extends Controller
 {
@@ -16,27 +17,27 @@ class TeamController extends Controller
      * @return \Illuminate\Http\Response
      */
     private $teamService, $teamRepo;
-    public function __construct(TeamServiceInterface $teamService, TeamRepoInterface $teamRepo){
+    public function __construct(TeamServiceInterface $teamService, TeamRepoInterface $teamRepo)
+    {
 
         $this->teamService = $teamService;
         $this->teamRepo = $teamRepo;
     }
     public function index()
     {
-        try{
+        try {
             $data = $this->teamRepo->get();
             return response()->json([
-            'status' => 'success',
-            'message' => "Team list all",
-            'data' => $data
-        ], 200);
-
-        } catch(Exception $e) {
+                'status' => 'success',
+                'message' => "Team list all",
+                'data' => $data
+            ], 200);
+        } catch (Exception $e) {
             return response()->json([
-            'status' => 'error',
-            'message' => $e->getMesage(),
-            'data' => $data
-        ], 500);
+                'status' => 'error',
+                'message' => $e->getMessage(),
+                'data' => $data
+            ], 500);
         }
     }
 
@@ -48,19 +49,19 @@ class TeamController extends Controller
      */
     public function store(TeamRequest $request)
     {
-        try{
+        try {
             $data = $this->teamService->store($request->validated());
             return response()->json([
-            'status' => 'success',
-            'message' => 'new team store',
-            'data' => $data
-        ], 200);
-        }  catch(Exception $e) {
+                'status' => 'success',
+                'message' => 'new team store',
+                'data' => $data
+            ], 200);
+        } catch (Exception $e) {
             return response()->json([
-            'status' => 'error',
-            'message' => $e->getMesage(),
-            'data' => $data
-        ], 500);
+                'status' => 'error',
+                'message' => $e->getMessage(),
+                'data' => $data
+            ], 500);
         }
     }
 
@@ -72,20 +73,19 @@ class TeamController extends Controller
      */
     public function show($id)
     {
-        try{
+        try {
             $data = $this->teamRepo->show($id);
             return response()->json([
-            'status' => 'success',
-            'message' => "Team select",
-            'data' => $data
-        ], 200);
-
-        } catch(Exception $e) {
+                'status' => 'success',
+                'message' => "Team select",
+                'data' => $data
+            ], 200);
+        } catch (Exception $e) {
             return response()->json([
-            'status' => 'error',
-            'message' => $e->getMesage(),
-            'data' => $data
-        ], 500);
+                'status' => 'error',
+                'message' => $e->getMessage(),
+                'data' => $data
+            ], 500);
         }
     }
 
@@ -98,19 +98,19 @@ class TeamController extends Controller
      */
     public function update(TeamRequest $request, $id)
     {
-        try{
+        try {
             $data = $this->teamService->update($request->validated(), $id);
             return response()->json([
-            'status' => 'success',
-            'message' => 'Team update',
-            'data' => $data
-        ], 200);
-        }  catch(Exception $e) {
+                'status' => 'success',
+                'message' => 'Team update',
+                'data' => $data
+            ], 200);
+        } catch (Exception $e) {
             return response()->json([
-            'status' => 'error',
-            'message' => $e->getMesage(),
-            'data' => $data
-        ], 500);
+                'status' => 'error',
+                'message' => $e->getMessage(),
+                'data' => $data
+            ], 500);
         }
     }
 
@@ -122,19 +122,19 @@ class TeamController extends Controller
      */
     public function destroy($id)
     {
-        try{
+        try {
             $data = $this->teamService->destroy($id);
             return response()->json([
-            'status' => 'success',
-            'message' => 'blog update',
-            'data' => $data
-        ], 200);
-        }  catch(Exception $e) {
+                'status' => 'success',
+                'message' => 'blog update',
+                'data' => $data
+            ], 200);
+        } catch (Exception $e) {
             return response()->json([
-            'status' => 'error',
-            'message' => $e->getMesage(),
-            'data' => $data
-        ], 500);
+                'status' => 'error',
+                'message' => $e->getMessage(),
+                'data' => $data
+            ], 500);
         }
     }
 }

@@ -16,6 +16,7 @@ class RoleAndPermissionSeeder extends Seeder
      */
     public function run()
     {
+<<<<<<< HEAD
         $superAdmin = Role::create(['name' => 'SuperAdmin']);
         $admin = Role::create(['name' => 'Admin']);
         $staff = Role::create(['name' => 'Staff']);
@@ -28,5 +29,9 @@ class RoleAndPermissionSeeder extends Seeder
         $superAdmin->givePermissionTo([$dashboard, $deleteAdmin, $userList, $deleteUser]);
         $admin->givePermissionTo([$dashboard, $deleteUser, $userList]);
         $staff->givePermissionTo([$dashboard]);
+=======
+        $admin = Role::create(['name' => 'Admin']);
+
+>>>>>>> hpa
     }
 }
