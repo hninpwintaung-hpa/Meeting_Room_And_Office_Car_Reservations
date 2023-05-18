@@ -7,6 +7,7 @@ use App\Http\Requests\RoleRequest;
 use App\Http\Controllers\Controller;
 use App\Repository\Role\RoleRepoInterface;
 use App\Services\Role\RoleServiceInterface;
+use Exception;
 
 class RoleController extends Controller
 {
@@ -16,27 +17,19 @@ class RoleController extends Controller
      * @return \Illuminate\Http\Response
      */
     private $roleService, $roleRepo;
-    public function __construct(RoleServiceInterface $roleService, RoleRepoInterface $roleRepo){
+    public function __construct(RoleServiceInterface $roleService, RoleRepoInterface $roleRepo)
+    {
 
         $this->roleService = $roleService;
         $this->roleRepo = $roleRepo;
     }
     public function index()
     {
-        try{
+        try {
             $data = $this->roleRepo->get();
-            return response()->json([
-            'status' => 'success',
-            'message' => "Role list all",
-            'data' => $data
-        ], 200);
-
-        } catch(Exception $e) {
-            return response()->json([
-            'status' => 'error',
-            'message' => $e->getMesage(),
-            'data' => $data
-        ], 500);
+            return $this->sendResponse($data, 'Role lists.');
+        } catch (Exception $e) {
+            return $this->sendError('Error in registration', $e->getMessage(), 500);
         }
     }
 
@@ -48,19 +41,11 @@ class RoleController extends Controller
      */
     public function store(RoleRequest $request)
     {
-        try{
+        try {
             $data = $this->roleService->store($request->validated());
-            return response()->json([
-            'status' => 'success',
-            'message' => 'New role store',
-            'data' => $data
-        ], 200);
-        }  catch(Exception $e) {
-            return response()->json([
-            'status' => 'error',
-            'message' => $e->getMesage(),
-            'data' => $data
-        ], 500);
+            return $this->sendResponse($data, 'New role stored.');
+        } catch (Exception $e) {
+            return $this->sendError('Error in role registration!', $e->getMessage(), 500);
         }
     }
 
@@ -72,20 +57,11 @@ class RoleController extends Controller
      */
     public function show($id)
     {
-        try{
+        try {
             $data = $this->roleRepo->show($id);
-            return response()->json([
-            'status' => 'success',
-            'message' => "Role select",
-            'data' => $data
-        ], 200);
-
-        } catch(Exception $e) {
-            return response()->json([
-            'status' => 'error',
-            'message' => $e->getMesage(),
-            'data' => $data
-        ], 500);
+            return $this->sendResponse($data, 'Successfully show selected role.');
+        } catch (Exception $e) {
+            return $this->sendError('Error!', $e->getMessage(), 500);
         }
     }
 
@@ -98,20 +74,11 @@ class RoleController extends Controller
      */
     public function update(RoleRequest $request, $id)
     {
-        try{
+        try {
             $data = $this->roleService->update($request->validated(), $id);
-            return response()->json([
-            'status' => 'success',
-            'message' => 'Role update',
-            'data' => $data
-        ], 200);
-
-        }  catch(Exception $e) {
-            return response()->json([
-            'status' => 'error',
-            'message' => $e->getMesage(),
-            'data' => $data
-        ], 500);
+            return $this->sendResponse($data, 'Successfully updated the  selected role.');
+        } catch (Exception $e) {
+            return $this->sendError('Error!', $e->getMessage(), 500);
         }
     }
 
@@ -123,19 +90,11 @@ class RoleController extends Controller
      */
     public function destroy($id)
     {
-        try{
+        try {
             $data = $this->roleService->destroy($id);
-            return response()->json([
-            'status' => 'success',
-            'message' => 'Role delete',
-            'data' => $data
-        ], 200);
-        }  catch(Exception $e) {
-            return response()->json([
-            'status' => 'error',
-            'message' => $e->getMesage(),
-            'data' => $data
-        ], 500);
+            return $this->sendResponse($data, 'Successfully deleted the  selected role.');
+        } catch (Exception $e) {
+            return $this->sendError('Error!', $e->getMessage(), 500);
         }
     }
 }

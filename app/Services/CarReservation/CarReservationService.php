@@ -12,14 +12,9 @@ class CarReservationService implements CarReservationServiceInterface
         $currentDateTime = Carbon::now();
         $inputDate = Carbon::parse($data['date']);
 
-        if ($inputDate >= $currentDateTime && isset($data['room_id'])) {
-            if ($data['car_id'] != null) {
+        if ($inputDate >= $currentDateTime) {
+            if ($data['car_id'] != null && isset($data['car_id'])) {
                 $inputCar = $data['car_id'];
-                //$inputDate = $data['date'];
-                // $existingReservation = CarReservation::where('car_id', $inputCarId)
-                // ->where('date', $inputDate)
-                //     ->where('status', 1)
-                //     ->first();
 
                 $existingReservation = CarReservation::all();
                 $inputStartTime = $data['start_time'];
@@ -39,7 +34,7 @@ class CarReservationService implements CarReservationServiceInterface
     }
     public function checkCarReservationOverlap($inputStartTime, $inputEndTime, $inputDate, $inputCar)
     {
-        $overlap = CarReservation::where('room_id', $inputCar)->where('date', '=', $inputDate)->where(function ($query) use ($inputStartTime, $inputEndTime) {
+        $overlap = CarReservation::where('car_id', $inputCar)->where('date', '=', $inputDate)->where(function ($query) use ($inputStartTime, $inputEndTime) {
             $query->where(function ($query) use ($inputStartTime, $inputEndTime) {
                 $query->where('start_time', '>=', $inputEndTime)
                     ->where('end_time', '<=', $inputStartTime);

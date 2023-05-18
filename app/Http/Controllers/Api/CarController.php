@@ -30,7 +30,7 @@ class CarController extends BaseController
             $data = $this->carRepo->get();
             return $this->sendResponse($data, 'All Data.');
         } catch (Exception $e) {
-            return $this->sendError('Error', $e->getMessage());
+            return $this->sendError('Error', $e->getMessage(), 500);
         }
     }
 
@@ -52,7 +52,7 @@ class CarController extends BaseController
             $data = $this->carService->store($input);
             return $this->sendResponse($data, 'Register successfully.');
         } catch (Exception $e) {
-            return $this->sendError('Error p', $e->getMessage());
+            return $this->sendError('Error in registration', $e->getMessage(), 500);
         }
     }
 
@@ -68,7 +68,7 @@ class CarController extends BaseController
             $data = $this->carRepo->show($id);
             return $this->sendResponse($data, 'Data Show');
         } catch (Exception $e) {
-            return $this->sendError('Error', $e->getMessage());
+            return $this->sendError('Error', $e->getMessage(), 500);
         }
     }
 
@@ -91,7 +91,7 @@ class CarController extends BaseController
             $data = $this->carService->update($input, $id);
             return $this->sendResponse($data, 'Updated successfully.');
         } catch (Exception $e) {
-            return $this->sendError('Error', $e->getMessage());
+            return $this->sendError('Error', $e->getMessage(), 500);
         }
     }
 
@@ -107,7 +107,7 @@ class CarController extends BaseController
             $data = $this->carService->delete($id);
             return $this->sendResponse($data, 'Deleted successfully.');
         } catch (Exception $e) {
-            return $this->sendError('Error', $e->getMessage());
+            return $this->sendError('Error', $e->getMessage(), 500);
         }
     }
 }

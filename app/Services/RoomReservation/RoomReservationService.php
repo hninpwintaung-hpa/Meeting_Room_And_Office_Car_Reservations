@@ -17,8 +17,8 @@ class RoomReservationService implements RoomReservationServiceInterface
         $currentDateTime = Carbon::now();
         $inputDate = Carbon::parse($data['date']);
 
-        if ($inputDate >= $currentDateTime && isset($data['room_id'])) {
-            if ($data['room_id'] != null) {
+        if ($inputDate >= $currentDateTime) {
+            if ($data['room_id'] != null && isset($data['room_id'])) {
 
                 $reservations = RoomReservation::all();
                 $inputStartTime = $data['start_time'];
@@ -26,9 +26,7 @@ class RoomReservationService implements RoomReservationServiceInterface
 
                 $inputRoom = $data['room_id'];
                 if (!empty($reservations)) {
-
                     foreach ($reservations as $reservation) {
-
                         $overlap = $this->checkRoomReservationOverlap($inputStartTime, $inputEndTime, $inputDate, $inputRoom);
 
                         if ($overlap) {

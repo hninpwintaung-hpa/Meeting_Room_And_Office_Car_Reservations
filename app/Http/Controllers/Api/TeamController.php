@@ -27,17 +27,9 @@ class TeamController extends Controller
     {
         try {
             $data = $this->teamRepo->get();
-            return response()->json([
-                'status' => 'success',
-                'message' => "Team list all",
-                'data' => $data
-            ], 200);
+            return $this->sendResponse($data, 'Team lists.');
         } catch (Exception $e) {
-            return response()->json([
-                'status' => 'error',
-                'message' => $e->getMessage(),
-                'data' => $data
-            ], 500);
+            return $this->sendError('Error!', $e->getMessage(), 500);
         }
     }
 
@@ -51,17 +43,9 @@ class TeamController extends Controller
     {
         try {
             $data = $this->teamService->store($request->validated());
-            return response()->json([
-                'status' => 'success',
-                'message' => 'new team store',
-                'data' => $data
-            ], 200);
+            return $this->sendResponse($data, 'Successfully register new team.');
         } catch (Exception $e) {
-            return response()->json([
-                'status' => 'error',
-                'message' => $e->getMessage(),
-                'data' => $data
-            ], 500);
+            return $this->sendError('Error in team registration', $e->getMessage(), 500);
         }
     }
 
@@ -75,17 +59,9 @@ class TeamController extends Controller
     {
         try {
             $data = $this->teamRepo->show($id);
-            return response()->json([
-                'status' => 'success',
-                'message' => "Team select",
-                'data' => $data
-            ], 200);
+            return $this->sendResponse($data, 'Selected team.');
         } catch (Exception $e) {
-            return response()->json([
-                'status' => 'error',
-                'message' => $e->getMessage(),
-                'data' => $data
-            ], 500);
+            return $this->sendError('Error!', $e->getMessage(), 500);
         }
     }
 
@@ -100,17 +76,9 @@ class TeamController extends Controller
     {
         try {
             $data = $this->teamService->update($request->validated(), $id);
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Team update',
-                'data' => $data
-            ], 200);
+            return $this->sendResponse($data, 'Successfully updated selected team.');
         } catch (Exception $e) {
-            return response()->json([
-                'status' => 'error',
-                'message' => $e->getMessage(),
-                'data' => $data
-            ], 500);
+            return $this->sendError('Error!', $e->getMessage(), 500);
         }
     }
 
@@ -124,17 +92,9 @@ class TeamController extends Controller
     {
         try {
             $data = $this->teamService->destroy($id);
-            return response()->json([
-                'status' => 'success',
-                'message' => 'blog update',
-                'data' => $data
-            ], 200);
+            return $this->sendResponse($data, 'Successfully deleted selected team.');
         } catch (Exception $e) {
-            return response()->json([
-                'status' => 'error',
-                'message' => $e->getMessage(),
-                'data' => $data
-            ], 500);
+            return $this->sendError('Error!', $e->getMessage(), 500);
         }
     }
 }

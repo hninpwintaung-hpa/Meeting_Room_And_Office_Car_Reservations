@@ -29,7 +29,7 @@ class ReservationController extends BaseController
             $reservation = $this->reservationRepo->get();
             return $this->sendResponse($reservation, 'Created Successfully');
         } catch (Exception $e) {
-            return $this->sendError('Error', $e->getMessage());
+            return $this->sendError('Error', $e->getMessage(), 500);
         }
     }
 
@@ -52,7 +52,7 @@ class ReservationController extends BaseController
             $reservation = $this->reservationService->store($request->all());
             return $this->sendResponse($reservation, 'Created Successfully');
         } catch (Exception $e) {
-            return $this->sendError('Error', $e->getMessage());
+            return $this->sendError('Error', $e->getMessage(), 500);
         }
     }
 
@@ -68,7 +68,7 @@ class ReservationController extends BaseController
             $reservation = $this->reservationRepo->show($id);
             return $this->sendResponse($reservation, 'Data Show Successfully');
         } catch (Exception $e) {
-            return $this->sendError('Error', $e->getMessage());
+            return $this->sendError('Error', $e->getMessage(), 500);
         }
     }
 
@@ -94,7 +94,7 @@ class ReservationController extends BaseController
             $data = $this->reservationService->update($input, $id);
             return $this->sendResponse($data, 'Updated Successfully');
         } catch (Exception $e) {
-            return $this->sendError('Error', $e->getMessage());
+            return $this->sendError('Error', $e->getMessage(), 500);
         }
     }
 
@@ -110,7 +110,7 @@ class ReservationController extends BaseController
             $data = $this->reservationService->delete($id);
             return $this->sendResponse($data, 'Deleted Successfully');
         } catch (Exception $e) {
-            return $this->sendError('Error', $e->getMessage());
+            return $this->sendError('Error', $e->getMessage(), 500);
         }
     }
 }

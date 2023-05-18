@@ -29,7 +29,7 @@ class RoomReservationController extends BaseController
             $reservation = $this->roomReservationRepo->get();
             return $this->sendResponse($reservation, 'Data Show Successfully');
         } catch (Exception $e) {
-            return $this->sendError('Error', $e->getMessage());
+            return $this->sendError('Error', $e->getMessage(), 500);
         }
     }
 
@@ -55,7 +55,7 @@ class RoomReservationController extends BaseController
             $reservation = $this->roomReservationService->store($request->all());
             return $this->sendResponse($reservation, 'Created Successfully');
         } catch (Exception $e) {
-            return $this->sendError('Error', $e->getMessage());
+            return $this->sendError('Error', $e->getMessage(), 500);
         }
     }
 
@@ -71,7 +71,7 @@ class RoomReservationController extends BaseController
             $data = $this->roomReservationRepo->show($id);
             return $this->sendResponse($data, 'Data Show Successfully');
         } catch (Exception $e) {
-            return $this->sendError('Error', $e->getMessage());
+            return $this->sendError('Error', $e->getMessage(), 500);
         }
     }
     public function searchByDate(Request $request)
@@ -80,7 +80,7 @@ class RoomReservationController extends BaseController
             $data = $this->roomReservationRepo->searchByDate($request->date);
             return $this->sendResponse($data, 'Data show by selected date');
         } catch (Exception $e) {
-            return $this->sendError('Error', $e->getMessage());
+            return $this->sendError('Error', $e->getMessage(), 500);
         }
     }
     /**
@@ -106,7 +106,7 @@ class RoomReservationController extends BaseController
             $data = $this->roomReservationService->update($input, $id);
             return $this->sendResponse($data, 'Updated Successfully');
         } catch (Exception $e) {
-            return $this->sendError('Error', $e->getMessage());
+            return $this->sendError('Error', $e->getMessage(), 500);
         }
     }
 
@@ -122,7 +122,7 @@ class RoomReservationController extends BaseController
             $data = $this->roomReservationService->delete($id);
             return $this->sendResponse($data, 'Deleted Successfully');
         } catch (Exception $e) {
-            return $this->sendError('Error', $e->getMessage());
+            return $this->sendError('Error', $e->getMessage(), 500);
         }
     }
 }

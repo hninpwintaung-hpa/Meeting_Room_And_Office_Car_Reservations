@@ -27,7 +27,7 @@ class CarReservationController extends BaseController
             $data = $this->carReservationRepo->get();
             return $this->sendResponse($data, ' Data Show successfully.');
         } catch (Exception $e) {
-            return $this->sendError('Error', $e->getMessage());
+            return $this->sendError('Error', $e->getMessage(), 500);
         }
     }
 
@@ -53,7 +53,7 @@ class CarReservationController extends BaseController
             $data = $this->carReservationService->store($input);
             return $this->sendResponse($data, 'Created  Reservation successfully.');
         } catch (Exception $e) {
-            return $this->sendError('Error', $e->getMessage());
+            return $this->sendError('Error', $e->getMessage(), 500);
         }
     }
 
@@ -69,7 +69,7 @@ class CarReservationController extends BaseController
             $data = $this->carReservationRepo->show($id);
             return $this->sendResponse($data, ' Data Show successfully.');
         } catch (Exception $e) {
-            return $this->sendError('Error', $e->getMessage());
+            return $this->sendError('Error', $e->getMessage(), 500);
         }
     }
 
@@ -96,7 +96,7 @@ class CarReservationController extends BaseController
             $data = $this->carReservationService->update($input, $id);
             return $this->sendResponse($data, 'Updated Reservation successfully.');
         } catch (Exception $e) {
-            return $this->sendError('Error', $e->getMessage());
+            return $this->sendError('Error', $e->getMessage(), 500);
         }
     }
 
@@ -112,7 +112,7 @@ class CarReservationController extends BaseController
             $data = $this->carReservationService->delete($id);
             return $this->sendResponse($data, 'Deleted successfully.');
         } catch (Exception $e) {
-            return $this->sendError('Error', $e->getMessage());
+            return $this->sendError('Error', $e->getMessage(), 500);
         }
     }
 }

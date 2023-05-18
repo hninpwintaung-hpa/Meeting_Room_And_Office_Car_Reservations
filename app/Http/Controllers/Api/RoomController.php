@@ -27,7 +27,7 @@ class RoomController extends BaseController
             $data = $this->roomRepo->get();
             return $this->sendResponse($data, 'All Data.');
         } catch (Exception $e) {
-            return $this->sendError('Error', $e->getMessage());
+            return $this->sendError('Error', $e->getMessage(), 500);
         }
     }
 
@@ -49,7 +49,7 @@ class RoomController extends BaseController
             $data = $this->roomService->store($input);
             return $this->sendResponse($data, 'Register successfully.');
         } catch (Exception $e) {
-            return $this->sendError('Error in register!', $e->getMessage());
+            return $this->sendError('Error in register!', $e->getMessage(), 500);
         }
     }
 
@@ -65,7 +65,7 @@ class RoomController extends BaseController
             $data = $this->roomRepo->show($id);
             return $this->sendResponse($data, 'Data Show');
         } catch (Exception $e) {
-            return $this->sendError('Error', $e->getMessage());
+            return $this->sendError('Error', $e->getMessage(), 500);
         }
     }
 
@@ -88,7 +88,7 @@ class RoomController extends BaseController
             $data = $this->roomService->update($input, $id);
             return $this->sendResponse($data, 'Updated successfully.');
         } catch (Exception $e) {
-            return $this->sendError('Error', $e->getMessage());
+            return $this->sendError('Error', $e->getMessage(), 500);
         }
     }
 
@@ -104,7 +104,7 @@ class RoomController extends BaseController
             $data = $this->roomService->delete($id);
             return $this->sendResponse($data, 'Deleted successfully.');
         } catch (Exception $e) {
-            return $this->sendError('Error', $e->getMessage());
+            return $this->sendError('Error', $e->getMessage(), 500);
         }
     }
 }

@@ -33,23 +33,12 @@ class UserController extends Controller
         try {
             $user = Auth::user();
             if (!$user->can('user-list')) {
-                return response()->json([
-                    'status' => 'error',
-                    'message' => 'You do not have permission to view user lists',
-                ], 403);
+                return $this->sendError('Error!', ['error' => 'You do not have permission to view user lists']);
             }
             $data = $this->userRepo->get();
-            return response()->json([
-                'status' => 'success',
-                'message' => "user list all",
-                'data' => $data
-            ], 200);
+            return $this->sendResponse($data, 'All User lists.');
         } catch (Exception $e) {
-            return response()->json([
-                'status' => 'error',
-                'message' => $e->getMessage(),
-                'data' => $data
-            ], 500);
+            return $this->sendError('Error!', $e->getMessage());
         }
     }
 
@@ -63,17 +52,9 @@ class UserController extends Controller
     {
         try {
             $data = $this->userService->store($request->all());
-            return response()->json([
-                'status' => 'success',
-                'message' => 'New user store',
-                'data' => $data
-            ], 200);
+            return $this->sendResponse($data, 'Successfully register new user.');
         } catch (Exception $e) {
-            return response()->json([
-                'status' => 'error',
-                'message' => $e->getMessage(),
-                'data' => $data
-            ], 500);
+            return $this->sendError('Error!', $e->getMessage());
         }
     }
 
@@ -87,17 +68,9 @@ class UserController extends Controller
     {
         try {
             $data = $this->userRepo->show($id);
-            return response()->json([
-                'status' => 'success',
-                'message' => "user select",
-                'data' => $data
-            ], 200);
+            return $this->sendResponse($data, 'Successfully show selected user.');
         } catch (Exception $e) {
-            return response()->json([
-                'status' => 'error',
-                'message' => $e->getMessage(),
-                'data' => $data
-            ], 500);
+            return $this->sendError('Error!', $e->getMessage());
         }
     }
 
@@ -124,38 +97,30 @@ class UserController extends Controller
 
             $user = Auth::user();
             if (!$user->can('delete-user')) {
-                return response()->json([
-                    'status' => 'error',
-                    'message' => 'You do not have permission to delete a user',
-                ], 403);
+                return $this->sendError('Error!', ['error' => 'You do not have permission to delete user'], 403);
             } else {
 
                 $userToDelete = User::find($id);
                 if (!$userToDelete) {
-                    return response()->json(['message' => 'User not found'], 404);
+                    // return response()->json(['message' => 'User not found'], 404);
+                    return $this->sendError('Error!', ['error' => 'User not found'], 404);
                 }
 
                 if ($userToDelete->hasRole('Admin')) {
-                    return response()->json(['message' => 'Cannot delete a user with Admin role'], 403);
+                    return $this->sendError('Error!', ['error' => 'Cannot delete a user with Admin role'], 403);
+
+                    //return response()->json(['message' => 'Cannot delete a user with Admin role'], 403);
                 }
 
                 if ($userToDelete->hasRole('SuperAdmin')) {
-                    return response()->json(['message' => 'Cannot delete a user with Super Admin role'], 403);
+                    return $this->sendError('Error!', ['error' => 'Cannot delete a user with Super Admin role'], 403);
                 }
 
                 $data = $this->userService->destroy($id);
-                return response()->json([
-                    'status' => 'success',
-                    'message' => 'user delete successful',
-                    'data' => $data
-                ], 200);
+                return $this->sendResponse($data, 'Successfully deleted selected user.');
             }
         } catch (Exception $e) {
-            return response()->json([
-                'status' => 'error',
-                'message' => $e->getMessage(),
-                // 'data' => $data
-            ], 500);
+            return $this->sendError('Error!', $e->getMessage(), 500);
         }
     }
 
@@ -165,30 +130,19 @@ class UserController extends Controller
 
             $user = Auth::user();
             if (!$user->can('delete-admin')) {
-                return response()->json([
-                    'status' => 'error',
-                    'message' => 'You do not have permission to delete admin',
-                ], 403);
+                return $this->sendError('Error!', ['error' => 'You do not have permission to delete admin'], 403);
             } else {
 
                 $userToDelete = User::find($id);
                 if (!$userToDelete) {
-                    return response()->json(['message' => 'User not found'], 404);
+                    return $this->sendError('Error!', ['error' => 'User not found'], 404);
                 }
 
                 $data = $this->userService->destroy($id);
-                return response()->json([
-                    'status' => 'success',
-                    'message' => 'admin delete successful',
-                    'data' => $data
-                ], 200);
+                return $this->sendResponse($data, 'Successfully deleted admin.');
             }
         } catch (Exception $e) {
-            return response()->json([
-                'status' => 'error',
-                'message' => $e->getMessage(),
-                // 'data' => $data
-            ], 500);
+            return $this->sendError('Error!', $e->getMessage(), 500);
         }
     }
 }
