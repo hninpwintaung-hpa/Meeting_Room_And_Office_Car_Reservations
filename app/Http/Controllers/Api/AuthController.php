@@ -96,6 +96,10 @@ class AuthController extends BaseController
                 $user = User::where('email', $request->email)->first();
                 $success['token'] = $user->createToken('MyApp')->plainTextToken;
                 $success['name'] = $user->name;
+                $success['user'] = $user;
+                $success['role'] = $user->getRoleNames()->first();
+
+
                 // $success['email'] = $user->email;
                 // $success['id'] = $user->id;
 
